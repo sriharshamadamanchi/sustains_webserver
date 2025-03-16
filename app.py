@@ -8,6 +8,5 @@ app = create_app()
 def sustains_server():
     return "<p>Welcome to sustains server!</p>"
 
-# if __name__ == "__main__":
-#     app = create_app()
-#     app.run()
+if __name__ == "__main__":
+    app.run()
