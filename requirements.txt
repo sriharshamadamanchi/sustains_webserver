@@ -1,0 +1,8 @@
+FLASK~=3.1.0
+FLASK-RESTFUL~=0.3.10
+Flask-PyMongo==2.3.0
+Flask-Cors~=5.0.1
+pymongo==4.10.1
+boto3~=1.37.13
+python-dotenv~=1.0.1
+Werkzeug~=3.1.3
