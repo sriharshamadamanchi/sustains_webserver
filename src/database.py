@@ -1,5 +1,6 @@
 import json
 import os
+
 import boto3
 from bson import ObjectId
 from dotenv import load_dotenv
@@ -16,6 +17,7 @@ s3 = boto3.client(
 )
 
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+
 
 def add_blog(data):
     blog = {"content": json.dumps(data["content"])}
@@ -72,6 +74,7 @@ def delete_blog(blog_id):
         return {"message": "Blog deleted"}
     return {"message": "Blog not found"}
 
+
 def upload_image_to_s3(data):
     file = data["image"]
     filename = secure_filename(file.filename)
@@ -79,4 +82,4 @@ def upload_image_to_s3(data):
 
     file_url = f"https://{BUCKET_NAME}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/{filename}"
 
-    return {"url": file_url}
+    return {"success": 1, "file": {"url": file_url}}

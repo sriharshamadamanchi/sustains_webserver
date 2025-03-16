@@ -6,10 +6,11 @@ from src.blog.api import blog_api
 
 mongo = PyMongo()
 
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
 
 def create_app():
+    app = Flask(__name__)
+    CORS(app)
+
     app.register_blueprint(blog_api)
 
     app.config['DEBUG'] = True
