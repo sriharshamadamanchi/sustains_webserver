@@ -48,15 +48,6 @@ def api_delete_blog(id):
     return jsonify(result), 200
 
 
-@blog_api.route('/image/upload', methods=["OPTIONS"])
-def handle_options():
-    response = jsonify({"message": "CORS Preflight"})
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-    return response
-
-
 @blog_api.route('/image/upload', methods=["POST"])
 def api_upload_image_to_s3():
     if "image" not in request.files:
