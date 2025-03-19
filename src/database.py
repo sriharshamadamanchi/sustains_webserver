@@ -83,3 +83,27 @@ def upload_image_to_s3(data):
     file_url = f"https://{BUCKET_NAME}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/{filename}"
 
     return {"success": 1, "file": {"url": file_url}}
+
+
+def get_user_by_email(email):
+    from src.factory import mongo
+    return mongo.db.users.find_one({"email": email})
+
+
+def get_user_by_id(id):
+    from src.factory import mongo
+    try:
+        object_id = ObjectId(id)
+    except:
+        return None
+    return mongo.db.users.find_one({"_id": object_id})
+
+
+def add_user(user):
+    from src.factory import mongo
+    return mongo.db.users.insert_one(user)
+
+
+def update_user(user, update):
+    from src.factory import mongo
+    mongo.db.users.update_one({"_id": user["_id"]}, {"$set": update})
