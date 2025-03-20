@@ -20,7 +20,7 @@ def create_app():
 
     app.config['DEBUG'] = True
     app.config[
-        'MONGO_URI'] = "mongodb+srv://sriharshamadamanchi:Harsha1642@database.l2gng.mongodb.net/Blog?retryWrites=true&w=majority"
+        'MONGO_URI'] = "mongodb+srv://sriharshamadamanchi:Harsha1642@database.l2gng.mongodb.net/Sustains?retryWrites=true&w=majority"
 
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
