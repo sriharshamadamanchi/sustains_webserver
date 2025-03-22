@@ -36,8 +36,6 @@ def api_get_blog(id):
 @blog_api.route('/<string:id>', methods=["PUT"])
 def api_update_blog(id):
     data = request.json
-    if not data or 'content' not in data:
-        return jsonify({"error": "content is required"}), 400
     result = update_blog(id, data)
     return jsonify(result), 200
 

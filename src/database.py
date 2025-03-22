@@ -84,7 +84,7 @@ def update_blog(blog_id, data):
         "author": data.get("author", saved_blog.get("author")),
         "blog_type": data.get("blog_type", saved_blog.get("blog_type")),
         "last_updated_at": timestamp,
-        "content": json.dumps(data.get("content"))
+        "content": json.dumps(data.get("content", saved_blog.get("content")))
     }
 
     mongo.db.blogs.find_one_and_update(
