@@ -22,7 +22,7 @@ BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
 def add_blog(data):
     author = data.get("author", {})
-    blog_type = data.get("blogType", "Other")
+    blog_type = data.get("blog_type", "Other")
 
     timestamp = int(time.time() * 1000)
     blog = {"author": author,
