@@ -3,7 +3,7 @@ from flask_mail import Message
 from itsdangerous import URLSafeSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from src.database import get_user_by_email, add_user, update_user, get_user_by_id
+from src.database import get_user_by_email, add_user, update_user, get_user_by_id, delete_user_by_id
 
 auth_api = Blueprint("auth_api", __name__, url_prefix="/oauth")
 serializer = URLSafeSerializer("a3f7b6c8d9e10234f5a6b7c8d9e01234f5a6b7c8d9e01234f5a6b7c8d9e01234")
@@ -48,7 +48,6 @@ def api_register_user():
 
     if not all([name, email, password]):
         response = {
-            "success": False,
             "message": "email, password and name are required."
         }
         return make_response(response, 400)
@@ -58,13 +57,11 @@ def api_register_user():
     if user:
         if not user.get('verified', False):
             response = {
-                "success": False,
                 "message": "Email already registered but not verified. A verification link has been sent to your email id."
             }
             send_confirmation_email(email)
         else:
             response = {
-                "success": False,
                 "message": "Email already registered. Please log in or use a different email."
             }
         return make_response(response, 400)
@@ -84,7 +81,6 @@ def api_register_user():
     send_confirmation_email(email)
 
     response = {
-        "success": True,
         "message": "A verification link has been sent to your email id"
     }
 
@@ -98,7 +94,6 @@ def api_login_user():
 
     if not email or not password:
         response = {
-            "success": False,
             "message": "email and password are required."
         }
         return make_response(response, 400)
@@ -107,46 +102,44 @@ def api_login_user():
 
     if not user:
         response = {
-            "success": False,
             "message": "Invalid email or password"
         }
         return make_response(response, 404)
 
     if not check_password_hash(user["password"], password):
         response = {
-            "success": False,
             "message": "Invalid email or password"
         }
         return make_response(response, 404)
 
     if not user.get('verified', False):
         response = {
-            "success": False,
             "message": "Email is not verified. A verification link has been sent to your email id."
         }
         send_confirmation_email(email=email)
         return make_response(response, 400)
 
     response = {
-        "success": True,
         "id": str(user["_id"])
     }
 
     return make_response(response, 200)
 
 
-@auth_api.route('/user/<string:id>', methods=["GET"])
+@auth_api.route('/user/<string:id>', methods=["GET", "DELETE"])
 def api_user_details(id):
     user = get_user_by_id(id=id)
     if not user:
         response = {
-            "success": False,
             "message": "User not found"
         }
         return make_response(response, 404)
 
+    if request.method == "DELETE":
+        delete_user_by_id(id)
+        return {"message": "User deleted successfully!!"}
+
     response = {
-        "success": True,
         "id": id,
         "name": user["name"],
         "email": user["email"]
